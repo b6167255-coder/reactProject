@@ -35,6 +35,17 @@ interface CreateTicketData {
   description: string;
   priority_id: number;
 }
+
+interface Comment {
+  id: number;
+  ticket_id: number;
+  author_id: number;
+  author_name?: string;
+  author_email?: string;
+  content: string;
+  created_at: string;
+}
+
 export const loginUser = async (
   email: string,
   password: string
@@ -127,5 +138,34 @@ export const getStatuses = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
+};
+
+export const getComments = async (
+  token: string,
+  ticketId: number
+): Promise<Comment[]> => {
+  const response = await axios.get(`${API_URL}/tickets/${ticketId}/comments`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const createComment = async (
+  token: string,
+  ticketId: number,
+  content: string
+): Promise<Comment> => {
+  const response = await axios.post(
+    `${API_URL}/tickets/${ticketId}/comments`,
+    { content },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
