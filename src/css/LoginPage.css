@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ea2fa 0%, #ca99f3 100%);
   padding: 20px;
 }
 
@@ -51,7 +51,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #90a1f0;
 }
 
 .form-group input:disabled {
@@ -71,7 +71,7 @@
 .login-button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #91a4f8 0%, #c28ff5 100%);
   color: white;
   border: none;
   border-radius: 6px;

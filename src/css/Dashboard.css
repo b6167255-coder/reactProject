@@ -31,7 +31,7 @@
 
 .logout-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #92a6fc 0%, #c89cf5 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -56,11 +56,11 @@
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
-  border-left: 5px solid #667eea;
+  border-left: 5px solid #9caefc;
 }
 
 .welcome-card.agent {
-  border-left-color: #f093fb;
+  border-left-color: #ef9ff8;
 }
 
 .welcome-card.admin {
@@ -99,7 +99,7 @@
 .action-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-top-color: #667eea;
+  border-top-color: #96a8f7;
 }
 
 .action-card h3 {
