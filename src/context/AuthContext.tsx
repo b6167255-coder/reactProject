@@ -4,7 +4,7 @@ interface User {
   id: number;
   name: string;
   email: string;
-  role: 'customer' | 'agent' | 'admin';
+  role: string;
   is_active: boolean;
   created_at: string;
 }

@@ -1,6 +1,6 @@
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import '../css/Dashboard.css';
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "../css/Dashboard.css";
 
 const AdminDashboard = () => {
   const { state, logout } = useAuth();
@@ -8,7 +8,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -30,12 +30,12 @@ const AdminDashboard = () => {
         </div>
 
         <div className="actions-grid">
-          <div className="action-card" onClick={() => navigate('/tickets')}>
+          <div className="action-card" onClick={() => navigate("/tickets")}>
             <h3>🎫 All Tickets</h3>
             <p>View and manage all tickets</p>
           </div>
 
-          <div className="action-card">
+          <div className="action-card" onClick={() => navigate("/users")}>
             <h3>👥 Users</h3>
             <p>Manage users and agents</p>
           </div>

@@ -1,73 +1,232 @@
-# React + TypeScript + Vite
+# Helpdesk Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+מערכת ניהול טיקטים (Helpdesk) מלאה עם ניהול משתמשים, תפקידים והרשאות.
 
-Currently, two official plugins are available:
+## 📋 תיאור המערכת
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+מערכת Helpdesk לניהול פניות ותמיכה טכנית. המערכת מאפשרת ללקוחות לפתוח טיקטים, לסוכנים לנהל ולטפל בפניות, ולמנהלים לנהל את כל המערכת.
 
-## React Compiler
+### תכונות עיקריות:
+- ✅ מערכת התחברות והרשאות מלאה (JWT Authentication)
+- ✅ ניהול טיקטים - יצירה, צפייה, עדכון, מחיקה
+- ✅ מערכת תגובות לטיקטים
+- ✅ הקצאת טיקטים לסוכנים
+- ✅ ניהול משתמשים (Admin)
+- ✅ עדכון סטטוסים ורמות דחיפות
+- ✅ דשבורדים מותאמים אישית לכל תפקיד
+- ✅ עיצוב רספונסיבי ומקצועי
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 👥 תפקידים והרשאות
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. Customer (לקוח)
+**הרשאות:**
+- פתיחת טיקטים חדשים
+- צפייה בטיקטים שיצר
+- הוספת תגובות לטיקטים שלו
+- עדכון פרטים אישיים
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**לא יכול:**
+- לראות טיקטים של אחרים
+- לשנות סטטוסים
+- לגשת לניהול המערכת
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Agent (סוכן תמיכה)
+**הרשאות:**
+- צפייה בטיקטים שהוקצו אליו
+- עדכון סטטוס טיקטים
+- הוספת תגובות לטיקטים
+- ניהול תור הפניות שלו
+
+**לא יכול:**
+- לראות כל הטיקטים במערכת
+- להקצות טיקטים
+- לנהל משתמשים או הגדרות
+
+---
+
+### 3. Admin (מנהל מערכת)
+**הרשאות מלאות:**
+- צפייה בכל הטיקטים במערכת
+- הקצאת טיקטים לסוכנים
+- עדכון סטטוסים ודחיפויות
+- ניהול משתמשים - הוספה, עריכה, מחיקה
+- הוספת סטטוסים ודחיפויות חדשים
+- גישה לדוחות וסטטיסטיקות
+
+---
+
+## 🚀 הנחיות הרצה
+
+### דרישות מקדימות
+- Node.js (גרסה 16 ומעלה)
+- npm או yarn
+- דפדפן מודרני (Chrome, Firefox, Edge)
+
+---
+
+### שלב 1: הפעלת השרת (Backend)
+
+1. **פתח טרמינל והיכנס לתיקיית השרת:**
+```bash
+   cd helpdesk-api-main/helpdesk-api-main
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. **התקן את החבילות (פעם ראשונה בלבד):**
+```bash
+   npm install
 ```
+
+3. **הפעל את השרת:**
+```bash
+   npm run dev
+```
+
+4. **וודא שהשרת רץ:**
+   - צריך להופיע: `Server listening on port 4000`
+   - פתח דפדפן והיכנס ל: `http://localhost:4000/docs` (Swagger Documentation)
+
+---
+
+### שלב 2: הפעלת הקליינט (Frontend)
+
+1. **פתח טרמינל נוסף והיכנס לתיקיית הפרויקט:**
+```bash
+   cd myProject
+```
+
+2. **התקן את החבילות (פעם ראשונה בלבד):**
+```bash
+   npm install
+```
+
+3. **הפעל את הפרויקט:**
+```bash
+   npm run dev
+```
+
+4. **פתח דפדפן והיכנס ל:**
+```
+   http://localhost:5173
+```
+   (או לפורט אחר שיופיע בטרמינל)
+
+---
+
+## 🔑 משתמשים לדוגמה
+
+המערכת מגיעה עם משתמשים מוגדרים מראש:
+
+| תפקיד | אימייל | סיסמה |
+|-------|--------|-------|
+| Admin | admin@example.com | password |
+| Agent | agent@example.com | password |
+| Customer | customer@example.com | password |
+
+---
+
+## 🛠️ טכנולוגיות
+
+### Frontend:
+- **React 18** - ספריית UI
+- **TypeScript** - שפת תכנות מותקנת
+- **React Router** - ניתוב בין דפים
+- **Context API** - ניהול State גלובלי
+- **Axios** - בקשות HTTP
+- **CSS3** - עיצוב מודרני
+
+### Backend:
+- **Node.js** - סביבת הרצה
+- **Express** - Framework לשרת
+- **TypeScript** - שפת תכנות
+- **SQLite** - מסד נתונים
+- **JWT** - אימות והרשאות
+- **Swagger** - תיעוד API
+
+---
+
+## 📁 מבנה הפרויקט
+```
+myProject/
+├── src/
+│   ├── components/      # קומפוננטות לשימוש חוזר
+│   ├── pages/          # דפי האפליקציה
+│   ├── context/        # ניהול State (Context API)
+│   ├── services/       # קריאות API
+│   ├── guards/         # Route Guards (הגנה על דפים)
+│   ├── css/            # קבצי עיצוב
+│   ├── App.tsx         # קומפוננטת ראשית
+│   └── main.tsx        # נקודת כניסה
+├── public/
+├── package.json
+└── README.md
+```
+
+---
+
+## 🎯 תרחישי שימוש
+
+### תרחיש 1: לקוח פותח טיקט
+1. התחבר כ-Customer
+2. לחץ על "Create New Ticket"
+3. מלא פרטים: נושא, תיאור, דחיפות
+4. שלח את הטיקט
+5. הטיקט מופיע ברשימה
+
+### תרחיש 2: Admin מקצה טיקט לסוכן
+1. התחבר כ-Admin
+2. לחץ על טיקט מהרשימה
+3. בחר Agent מהרשימה הנפתחת
+4. הטיקט הוקצה לסוכן
+
+### תרחיש 3: Agent מטפל בטיקט
+1. התחבר כ-Agent
+2. ראה רשימת טיקטים שהוקצו אליך
+3. לחץ על טיקט
+4. עדכן סטטוס, הוסף תגובה
+5. הלקוח מקבל עדכון
+
+### תרחיש 4: Admin מוסיף משתמש חדש
+1. התחבר כ-Admin
+2. לחץ על "Users" בדשבורד
+3. לחץ על "Add New User"
+4. מלא פרטים ובחר תפקיד
+5. המשתמש החדש נוצר ויכול להתחבר
+
+---
+
+## 🐛 פתרון בעיות נפוצות
+
+### השרת לא עולה
+- ודא ש-Node.js מותקן: `node --version`
+- ודא שאתה בתיקייה הנכונה
+- נסה למחוק `node_modules` ולהתקין מחדש
+
+### דף ריק / לא עובד
+- פתח F12 → Console ובדוק שגיאות
+- ודא ששני השרתים רצים (Backend + Frontend)
+- נקה Cache של הדפדפן (Ctrl+Shift+Delete)
+
+### שגיאת 401 Unauthorized
+- ודא שהשרת רץ על port 4000
+- נסה להתנתק ולהתחבר מחדש
+- בדוק אם הטוקן תקף ב-localStorage
+
+---
+
+## 📞 תמיכה
+
+לשאלות או בעיות, פנה למפתח המערכת.
+
+---
+
+## 📝 רישיון
+
+פרויקט לימודי - React Helpdesk System © 2024
+
+---
+
+**Good Luck! 🚀**

@@ -4,8 +4,11 @@ import ProtectedRoute from "./guards/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import TicketsPage from "./pages/TicketsPage";
-import TicketDetailPage from './pages/TicketDetailPage';
+import TicketDetailPage from "./pages/TicketDetailPage";
 import CreateTicketPage from "./pages/CreateTicketPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import UsersPage from "./pages/UsersPage";
+import CreateUserPage from "./pages/CreateUserPage";
 
 import "./App.css";
 
@@ -48,9 +51,26 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <UsersPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/users/new"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CreateUserPage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<div>404 - Page Not Found</div>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

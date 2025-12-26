@@ -11,7 +11,6 @@ const DashboardPage = () => {
     return <div>Loading...</div>;
   }
 
-  // הצגת Dashboard לפי תפקיד
   switch (user.role) {
     case 'customer':
       return <CustomerDashboard />;

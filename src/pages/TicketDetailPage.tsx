@@ -1,8 +1,7 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getTicket,getComments,createComment,updateTicket,getStatuses,
-} from '../services/api.service';
+import {getTicket, getComments, createComment, updateTicket, getStatuses, getUsers, }from '../services/api.service';
 import '../css/TicketDetailPage.css';
 
 interface Ticket {
@@ -34,11 +33,21 @@ interface Status {
   name: string;
 }
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+}
+
 const TicketDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [statuses, setStatuses] = useState<Status[]>([]);
+  const [agents, setAgents] = useState<User[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -48,32 +57,42 @@ const TicketDetailPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!state.token || !id) return;
+  const fetchData = async () => {
+    try {
+      if (!state.token || !id) return;
 
-        setLoading(true);
-        const [ticketData, commentsData, statusesData] = await Promise.all([
-          getTicket(state.token, Number(id)),
-          getComments(state.token, Number(id)),
-          getStatuses(state.token),
-        ]);
+      setLoading(true);
+      
+      const [ticketData, commentsData, statusesData] = await Promise.all([
+        getTicket(state.token, Number(id)),
+        getComments(state.token, Number(id)),
+        getStatuses(state.token),
+      ]);
 
-        setTicket(ticketData);
-        setComments(commentsData);
-        setStatuses(statusesData);
-        setError('');
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : 'Failed to load ticket';
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
+      setTicket(ticketData);
+      setComments(commentsData);
+      setStatuses(statusesData);
+
+      if (state.user?.role === 'admin') {
+        const usersData = await getUsers(state.token);
+        const agentsList = usersData.filter(
+          (user) => user.role === 'agent' || user.role === 'admin'
+        );
+        setAgents(agentsList);
       }
-    };
 
-    fetchData();
-  }, [state.token, id]);
+      setError('');
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to load ticket';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, [state.token, state.user?.role, id]);
 
   const handleAddComment = async (e: FormEvent) => {
     e.preventDefault();
@@ -119,6 +138,22 @@ const TicketDetailPage = () => {
     }
   };
 
+  const handleAssignAgent = async (agentId: number) => {
+  try {
+    if (!state.token || !id) return;
+
+    const updatedTicket = await updateTicket(state.token, Number(id), {
+      assigned_to: agentId,
+    });
+
+    setTicket(updatedTicket);
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : 'Failed to assign agent';
+    setError(errorMessage);
+  }
+};
+
   const handleBack = () => {
     navigate('/tickets');
   };
@@ -142,6 +177,8 @@ const TicketDetailPage = () => {
   const canUpdateStatus =
     state.user?.role === 'agent' || state.user?.role === 'admin';
 
+    const isAdmin = state.user?.role === 'admin';
+
   return (
     <div className="ticket-detail-container">
       <header className="ticket-detail-header">
@@ -158,7 +195,7 @@ const TicketDetailPage = () => {
             <h1>
               #{ticket.id} - {ticket.subject}
             </h1>
-            <div className="ticket-badges">
+           <div className="ticket-badges">
               <span className={`priority-badge priority-${ticket.priority_id}`}>
                 {ticket.priority_name || 'Priority ' + ticket.priority_id}
               </span>
@@ -178,6 +215,20 @@ const TicketDetailPage = () => {
                 <span className={`status-badge status-${ticket.status_id}`}>
                   {ticket.status_name || 'Status ' + ticket.status_id}
                 </span>
+              )}
+              {isAdmin && (
+                <select
+                  value={ticket.assigned_to || ''}
+                  onChange={(e) => handleAssignAgent(Number(e.target.value))}
+                  className="assign-select"
+                >
+                  <option value="">Assign to Agent...</option>
+                  {agents.map((agent) => (
+                    <option key={agent.id} value={agent.id}>
+                      {agent.name} ({agent.role})
+                    </option>
+                  ))}
+                </select>
               )}
             </div>
           </div>

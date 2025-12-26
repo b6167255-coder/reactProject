@@ -169,3 +169,31 @@ export const createComment = async (
   );
   return response.data;
 };
+
+export const getUsers = async (token: string): Promise<User[]> => {
+  const response = await axios.get(`${API_URL}/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+interface CreateUserData {
+  name: string;
+  email: string;
+  password: string;
+  role: 'customer' | 'agent' | 'admin';
+}
+
+export const createUser = async (
+  token: string,
+  data: CreateUserData
+): Promise<User> => {
+  const response = await axios.post(`${API_URL}/users`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
